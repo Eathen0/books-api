@@ -21,13 +21,12 @@ const upload = multer({
 })
 
 // database
+const host = process.env.DB_HOST
+const database = process.env.DB_NAME
+const user = process.env.DB_USER
+const password = process.env.DB_PASSWORD
 const mysql = require('mysql')
-const DB = mysql.createConnection({
-   host: 'localhost',
-   user: 'root',
-   password: '',
-   database: 'book_shop'
-})
+const DB = mysql.createConnection({host, user, password, database})
 DB.connect(err => {
    console.log(err || 'connected with mysql')
 })
