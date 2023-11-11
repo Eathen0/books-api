@@ -44,7 +44,8 @@ app.use(bodyParser.json())
 
 // API documentation
 app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname, '/pages/home.html'))
+   // res.sendFile(path.join(__dirname, '/pages/home.html'))
+   res.status(200).json({message: 'success'})
 })
 
 
