@@ -4,6 +4,7 @@
   "description": "this is i first try to make a RESTfull API using a Express js",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
