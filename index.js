@@ -11,7 +11,7 @@ const upload = multer({
 	limits: { fileSize: 5000000 },
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			cb(null, path.join(__dirname, "/img-uploads"));
+			cb(null, path.join(__dirname, "/tmp"));
 		},
 		filename: (req, file, cb) => {
 			const uniqueSuffix =
@@ -26,7 +26,7 @@ const upload = multer({
 
 // database
 const host = process.env.DB_HOST || 'localhost'
-const database = process.env.DB_NAME || 'books_shop'
+const database = process.env.DB_NAME || 'book_shop'
 const user = process.env.DB_USER || 'root'
 const password = process.env.DB_PASSWORD || ''
 
@@ -40,7 +40,7 @@ DB.connect((err) => {
 // const PORT = process.env.PORT || 9000;
 
 app.use(
-	express.static("./img-uploads", {
+	express.static("./tmp", {
 		index: false,
 		redirect: false,
 	})
@@ -88,13 +88,11 @@ app.route("/books")
 				});
 			} else {
 				try {
-					DB.query(
-						`
-            INSERT INTO \`books\` (\`id\`, \`title\`, \`synopsis\`, \`cover\`, \`like\`, \`disLike\`) 
-            VALUES (NULL, ${mysql.escape(req.body.title)}, ${mysql.escape(
+					DB.query(`INSERT INTO \`books\` (\`id\`, \`title\`, \`synopsis\`, \`cover\`, \`like\`, \`disLike\`) 
+                  VALUES (NULL, ${mysql.escape(req.body.title)}, ${mysql.escape(
 							req.body.synopsis
 						)}, ${mysql.escape(
-							path.join(__dirname, `/img-uploads/${req.file.filename}`)
+							path.join(__dirname, `/tmp/${req.file.filename}`)
 						)}, 0, 0)`,
 						(err, row, filed) => {
 							if (err) {
@@ -105,13 +103,7 @@ app.route("/books")
 								});
 							} else {
 								res.status(200).json({
-									result: {
-										...req.body,
-										cover: path.join(
-											__dirname,
-											"/img-uploads/" + req.file.filename
-										),
-									},
+									result: {...req.body, cover: path.join(__dirname, "/tmp/" + req.file.filename),},
 									message: "success adding new book",
 								});
 							}
