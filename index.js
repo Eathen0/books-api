@@ -11,7 +11,7 @@ const upload = multer({
 	limits: { fileSize: 5000000 },
 	storage: multer.diskStorage({
 		destination: (req, file, cb) => {
-			cb(null, path.join(__dirname, "/tmp"));
+			cb(null, path.join(__dirname, "tmp"));
 		},
 		filename: (req, file, cb) => {
 			const uniqueSuffix =
@@ -20,8 +20,8 @@ const upload = multer({
 				file.originalname.indexOf(".", -1)
 			);
 			cb(null, file.fieldname + "-" + uniqueSuffix + fileFormat);
-		},
-	}),
+		}
+	})
 });
 
 // database
@@ -40,7 +40,7 @@ DB.connect((err) => {
 // const PORT = process.env.PORT || 9000;
 
 app.use(
-	express.static("./tmp", {
+	express.static(".tmp", {
 		index: false,
 		redirect: false,
 	})
@@ -52,6 +52,12 @@ app.get("/", (req, res) => {
 	res.sendFile(path.join(__dirname, '/pages/home.html'))
 	// res.status(200).json({ message: "success" });
 });
+
+
+const tempDir = path.join(__dirname, 'tmp');
+if (!fs.existsSync(tempDir)) {
+   fs.mkdirSync(tempDir);
+}
 
 // Some EndPoint
 app.route("/books")
@@ -92,7 +98,7 @@ app.route("/books")
                   VALUES (NULL, ${mysql.escape(req.body.title)}, ${mysql.escape(
 							req.body.synopsis
 						)}, ${mysql.escape(
-							path.join(__dirname, `/tmp/${req.file.filename}`)
+							path.join(__dirname, `tmp/${req.file.filename}`)
 						)}, 0, 0)`,
 						(err, row, filed) => {
 							if (err) {
@@ -103,7 +109,7 @@ app.route("/books")
 								});
 							} else {
 								res.status(200).json({
-									result: {...req.body, cover: path.join(__dirname, "/tmp/" + req.file.filename),},
+									result: {...req.body, cover: path.join(__dirname, "tmp/" + req.file.filename),},
 									message: "success adding new book",
 								});
 							}
