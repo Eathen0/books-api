@@ -25,18 +25,12 @@ const upload = multer({
 });
 
 // database
-// const host = process.env.DB_HOST || 'localhost'
-// const database = process.env.DB_NAME || 'books_shop'
-// const user = process.env.DB_USER || 'root'
-// const password = process.env.DB_PASSWORD || ''
+const host = process.env.DB_HOST || 'localhost'
+const database = process.env.DB_NAME || 'books_shop'
+const user = process.env.DB_USER || 'root'
+const password = process.env.DB_PASSWORD || ''
 const mysql = require("mysql");
-// const DB = mysql.createConnection({host, user, password, database})
-const DB = mysql.createConnection({
-	host: "sql12.freesqldatabase.com",
-	user: "sql12661156",
-	database: "sql12661156",
-	password: "VcbiZVKiPR",
-});
+const DB = mysql.createConnection({host, user, password, database})
 DB.connect((err) => {
 	console.log(err || "connected with mysql");
 });
