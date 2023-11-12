@@ -42,7 +42,7 @@ DB.connect((err) => {
 });
 
 // Set a Port
-const PORT = process.env.PORT || 9000;
+// const PORT = process.env.PORT || 9000;
 
 app.use(
 	express.static("./img-uploads", {
@@ -208,7 +208,7 @@ app.get("/*", (request, response) => {
 //    console.log(`Server is running in http://localhost:${PORT}`)
 // })
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "9000");
 app.set("port", port);
 
 /**
