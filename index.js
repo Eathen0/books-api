@@ -29,6 +29,7 @@ const host = process.env.DB_HOST || 'localhost'
 const database = process.env.DB_NAME || 'books_shop'
 const user = process.env.DB_USER || 'root'
 const password = process.env.DB_PASSWORD || ''
+
 const mysql = require("mysql");
 const DB = mysql.createConnection({host, user, password, database})
 DB.connect((err) => {
@@ -48,8 +49,8 @@ app.use(bodyParser.json());
 
 // API documentation
 app.get("/", (req, res) => {
-	// res.sendFile(path.join(__dirname, '/pages/home.html'))
-	res.status(200).json({ message: "success" });
+	res.sendFile(path.join(__dirname, '/pages/home.html'))
+	// res.status(200).json({ message: "success" });
 });
 
 // Some EndPoint
@@ -83,7 +84,7 @@ app.route("/books")
 			} else if (err) {
 				res.status(502).json({
 					result: null,
-					message: "unknown error",
+					message: err.message,
 				});
 			} else {
 				try {
